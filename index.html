@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Create Questions</title>
+    <script type="text/javascript" src="script.js"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Create Questions</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <form id="questionForm">
+                <div class="form-group">
+                    <label for="question">Question:</label>
+                    <input type="text" class="form-control" id="newQuestion" name="question[]" required>
+                </div>
+
+                <button type="button" class="btn btn-primary mt-3" onclick="addQuestion()">Add More Questions</button>
+                <button type="button" class="btn btn-success mt-3" onclick="saveQuestions()">Finish and Save</button>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <div id="questionList"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+</script>
+
+</body>
+</html>
