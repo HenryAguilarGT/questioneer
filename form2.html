@@ -1,4 +1,41 @@
- function addQuestion() {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Create Questions</title>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Create Questions</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <form id="questionForm">
+                <div class="form-group">
+                    <label for="newQuestion">Question:</label>
+                    <input type="text" class="form-control" id="newQuestion" name="question[]" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="newContext">Context Question:</label>
+                    <input type="text" class="form-control" id="newContext" name="contextQuestion">
+                </div>
+
+                <button type="button" class="btn btn-primary mt-3" onclick="addQuestion()">Add More Questions</button>
+                <button type="button" class="btn btn-success mt-3" onclick="saveQuestions()">Finish and Save</button>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <div id="questionList"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function addQuestion() {
         const newQuestionInput = document.getElementById('newQuestion');
         const newContextInput = document.getElementById('newContext');
 
@@ -13,7 +50,7 @@
         const questionList = document.getElementById('questionList');
         const newQuestion = document.createElement('div');
         newQuestion.innerHTML = `
-            <div class="mb-2 py-2" style="background-color: #f2f2f2;padding: 10px;border-radius: 1vw;">
+            <div class="mb-2">
                 <span><strong>Question:</strong> ${questionText}</span>
                 <div><strong>Context:</strong> ${contextQuestionText}</div>
                 <button type="button" class="btn btn-warning btn-sm ml-2" onclick="editQuestion(this)">Edit</button>
@@ -76,3 +113,7 @@
         const questionDiv = button.parentNode;
         questionDiv.parentNode.removeChild(questionDiv);
     }
+</script>
+
+</body>
+</html>

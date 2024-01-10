@@ -4,19 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Create Questions</title>
-    <script type="text/javascript" src="script.js"></script>
+    <title>Create Builder</title>
 </head>
 <body>
 
 <div class="container mt-5">
     <h2>Create Questions</h2>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 py-2">
             <form id="questionForm">
                 <div class="form-group">
-                    <label for="question">Question:</label>
+                    <label for="newQuestion">Question:</label>
                     <input type="text" class="form-control" id="newQuestion" name="question[]" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="newContext">Context Question:</label>
+                    <input type="text" class="form-control" id="newContext" name="contextQuestion">
                 </div>
 
                 <button type="button" class="btn btn-primary mt-3" onclick="addQuestion()">Add More Questions</button>
@@ -24,15 +28,13 @@
             </form>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-6 py-2">
             <div id="questionList"></div>
         </div>
     </div>
 </div>
 
-<script>
-    
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
