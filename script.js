@@ -1,4 +1,4 @@
- function addQuestion() {
+function addQuestion() {
         const newQuestionInput = document.getElementById('newQuestion');
         const newContextInput = document.getElementById('newContext');
 
@@ -24,6 +24,8 @@
 
         newQuestionInput.value = ''; // Clear the input fields
         newContextInput.value = '';
+
+        newQuestionInput.focus(); // Move the cursor back to the first input
     }
 
     function saveQuestions() {
@@ -76,3 +78,17 @@
         const questionDiv = button.parentNode;
         questionDiv.parentNode.removeChild(questionDiv);
     }
+
+    document.getElementById('newQuestion').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            addQuestion();
+        }
+    });
+
+    document.getElementById('newContext').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            addQuestion();
+        }
+    });
