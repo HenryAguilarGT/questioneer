@@ -28,67 +28,81 @@ function addQuestion() {
         newQuestionInput.focus(); // Move the cursor back to the first input
     }
 
-    function saveQuestions() {
-        const questionList = document.getElementById('questionList');
-        const questionsArray = [];
+function saveQuestions() {
+    const questionList = document.getElementById('questionList');
+    const questionsArray = [];
 
-        questionList.querySelectorAll('span').forEach(question => {
-            const context = question.nextElementSibling.textContent.replace('Context: ', '').trim();
-            questionsArray.push(`${question.textContent}\nContext: ${context}`);
-        });
-
-        const questionsText = questionsArray.join('\n');
-        console.log('Questions Text:', questionsText);
-
-        // Create a Blob containing the questions
-        const blob = new Blob([questionsText], { type: 'text/plain' });
-
-        // Create a download link
-        const downloadLink = document.createElement('a');
-        downloadLink.href = URL.createObjectURL(blob);
-        downloadLink.download = 'questions.txt';
-
-        // Append the link to the body
-        document.body.appendChild(downloadLink);
-
-        // Click the link programmatically
-        downloadLink.click();
-
-        // Remove the link from the DOM after a short delay
-        setTimeout(() => {
-            document.body.removeChild(downloadLink);
-            URL.revokeObjectURL(blob);
-        }, 100);
-    }
-
-    function editQuestion(button) {
-        const questionDiv = button.parentNode;
-        const questionText = questionDiv.querySelector('span');
-        const contextQuestionText = questionDiv.querySelector('div');
-
-        const updatedQuestion = prompt('Edit the question:', questionText.textContent);
-        if (updatedQuestion !== null) {
-            questionText.textContent = updatedQuestion;
-            const updatedContext = prompt('Edit the context question:', contextQuestionText.textContent.replace('Context: ', '').trim());
-            contextQuestionText.textContent = `Context: ${updatedContext}`;
-        }
-    }
-
-    function deleteQuestion(button) {
-        const questionDiv = button.parentNode;
-        questionDiv.parentNode.removeChild(questionDiv);
-    }
-
-    document.getElementById('newQuestion').addEventListener('keydown', function (event) {
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault();
-            addQuestion();
-        }
+    questionList.querySelectorAll('span').forEach(question => {
+        const context = question.nextElementSibling.textContent.replace('Context: ', '').trim();
+        questionsArray.push({ question_text: question.textContent, context_text: context });
     });
 
-    document.getElementById('newContext').addEventListener('keydown', function (event) {
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault();
-            addQuestion();
+    // AJAX request to save questions to the MySQL database
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'saveQuestions.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                console.log('Questions saved to the server.');
+            } else {
+                console.error('Error saving questions:', xhr.statusText);
+            }
         }
-    });
+    };
+    xhr.send(JSON.stringify({ questions: questionsArray }));
+}
+
+
+function downloadFile(filePath) {
+    // Create a hidden link element
+    const downloadLink = document.createElement('a');
+    downloadLink.href = filePath;
+    downloadLink.target = '_blank';  // Open in a new tab/window
+    downloadLink.download = 'questions.txt';
+
+    // Append the link to the body
+    document.body.appendChild(downloadLink);
+
+    // Click the link programmatically
+    downloadLink.click();
+
+    // Remove the link from the DOM after a short delay
+    setTimeout(() => {
+        document.body.removeChild(downloadLink);
+    }, 100);
+}
+
+
+
+function editQuestion(button) {
+    const questionDiv = button.parentNode;
+    const questionText = questionDiv.querySelector('span');
+    const contextQuestionText = questionDiv.querySelector('div');
+
+    const updatedQuestion = prompt('Edit the question:', questionText.textContent);
+    if (updatedQuestion !== null) {
+        questionText.textContent = updatedQuestion;
+        const updatedContext = prompt('Edit the context question:', contextQuestionText.textContent.replace('Context: ', '').trim());
+        contextQuestionText.textContent = `Context: ${updatedContext}`;
+    }
+}
+
+function deleteQuestion(button) {
+    const questionDiv = button.parentNode;
+    questionDiv.parentNode.removeChild(questionDiv);
+}
+
+document.getElementById('newQuestion').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        addQuestion();
+    }
+});
+
+document.getElementById('newContext').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        addQuestion();
+    }
+});
